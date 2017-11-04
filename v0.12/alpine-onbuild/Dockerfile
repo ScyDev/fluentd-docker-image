@@ -39,12 +39,13 @@ RUN mkdir -p /fluentd/log
 # configuration/plugins path (default: copied from .)
 RUN mkdir -p /fluentd/etc /fluentd/plugins
 
-#COPY fluent.conf /fluentd/etc/
-COPY entrypoint.sh /bin/
+COPY v0.12/alpine-onbuild/fluent.conf /fluentd/etc/
+COPY v0.12/alpine-onbuild/entrypoint.sh /bin/
 RUN chmod +x /bin/entrypoint.sh
 
-#ONBUILD COPY fluent.conf /fluentd/etc/
-#ONBUILD COPY plugins /fluentd/plugins/
+# because when using remote git url as build context, it will run in /. even if Dockerfile is in a sub dir
+ONBUILD COPY v0.12/alpine-onbuild/fluent.conf /fluentd/etc/
+#ONBUILD COPY v0.12/alpine-onbuild/plugins /fluentd/plugins/
 
 ENV FLUENTD_OPT=""
 ENV FLUENTD_CONF="fluent.conf"
